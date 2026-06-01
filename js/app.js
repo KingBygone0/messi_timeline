@@ -52,10 +52,26 @@ function buildCard(event, index) {
     </article>`;
 }
 
+// ── Year separator ────────────────────────────────────────────────────────────
+
+function buildSeparator(year) {
+  return `<div class="timeline__separator" aria-hidden="true">
+    <span class="timeline__separator-year">${year}</span>
+  </div>`;
+}
+
 // ── Render ────────────────────────────────────────────────────────────────────
 
 function render() {
-  document.getElementById('timeline').innerHTML = sorted.map(buildCard).join('');
+  const items = [];
+  sorted.forEach((event, index) => {
+    // Inject a year marker whenever there is a gap of 2+ years
+    if (index > 0 && event.year - sorted[index - 1].year >= 2) {
+      items.push(buildSeparator(event.year));
+    }
+    items.push(buildCard(event, index));
+  });
+  document.getElementById('timeline').innerHTML = items.join('');
   console.log(`Messi Timeline — ${sorted.length} events loaded`);
 }
 
@@ -241,10 +257,31 @@ function initMedia() {
   });
 }
 
+// ── Back to top ───────────────────────────────────────────────────────────────
+
+function initBackToTop() {
+  const btn  = document.querySelector('.back-to-top');
+  const hero = document.querySelector('.hero');
+
+  function update() {
+    const visible = hero.getBoundingClientRect().bottom < 0;
+    btn.classList.toggle('is-visible', visible);
+    btn.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    btn.tabIndex = visible ? 0 : -1;
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
 // ── Boot ──────────────────────────────────────────────────────────────────────
 
 render();
 initEraFilter();
 initScrollReveal();
 initSpineProgress();
+initBackToTop();
 initMedia();
