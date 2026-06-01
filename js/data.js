@@ -36,6 +36,30 @@ export const EVENTS = [
     xSearch: "Messi U20 World Cup Argentina 2005 Golden Ball"
   },
   {
+    id: "first-world-cup-2006",
+    year: 2006,
+    date: "Jun 2006",
+    era: "argentina",
+    title: "First FIFA World Cup — scores debut goal at age 18",
+    description: "Messi makes his senior World Cup debut in Germany, coming off the bench to score against Serbia & Montenegro and become one of Argentina's youngest-ever World Cup scorers. Argentina reach the quarter-finals before losing to Germany on penalties — the first of many international heartbreaks.",
+    youtubeId: "",
+    youtubeSearch: "Messi first World Cup goal 2006 Germany Serbia Montenegro",
+    tweetUrl: "",
+    xSearch: "Messi World Cup debut 2006 Germany"
+  },
+  {
+    id: "copa-america-runner-up-2007",
+    year: 2007,
+    date: "15 Jul 2007",
+    era: "argentina",
+    title: "Copa América runner-up — wins Best Young Player",
+    description: "Argentina reach the Copa América final in Venezuela but are outclassed by Brazil 3–0. A 19-year-old Messi is named Best Young Player of the tournament — brilliant individually, but the pattern of international near-misses is already beginning to form.",
+    youtubeId: "",
+    youtubeSearch: "Messi Copa America 2007 Argentina Brazil final",
+    tweetUrl: "",
+    xSearch: "Messi Copa America 2007 runner-up"
+  },
+  {
     id: "maradona-goal-2007",
     year: 2007,
     date: "18 Apr 2007",
@@ -48,16 +72,52 @@ export const EVENTS = [
     xSearch: "Messi Maradona goal Getafe 2007"
   },
   {
+    id: "olympic-gold-2008",
+    year: 2008,
+    date: "23 Aug 2008",
+    era: "argentina",
+    title: "Olympic Gold Medal — Beijing",
+    description: "Messi helps Argentina win the gold medal at the Beijing Olympics, one of the few international trophies he would hold for the next 13 years. Ángel Di María scores the only goal in a 1–0 final win over Nigeria, with Messi — two goals and multiple assists across the tournament — a constant creative force.",
+    youtubeId: "",
+    youtubeSearch: "Messi Argentina Olympic gold medal Beijing 2008 Nigeria",
+    tweetUrl: "",
+    xSearch: "Messi Olympic gold 2008 Beijing Argentina"
+  },
+  {
     id: "first-treble-2009",
     year: 2009,
     date: "May 2009",
     era: "barca",
     title: "First treble, UCL final header & 1st Ballon d'Or",
-    description: "Barcelona complete an historic treble under Pep Guardiola. Messi heads in the decisive second goal in the Champions League final against Manchester United in Rome, then claims his first Ballon d'Or — the beginning of an unprecedented era of individual dominance.",
+    description: "Barcelona complete a historic treble under Pep Guardiola. Messi heads in the decisive second goal in the Champions League final against Manchester United in Rome, then claims his first Ballon d'Or — the beginning of an unprecedented era of individual dominance.",
     youtubeId: "",
     youtubeSearch: "Messi header Champions League final 2009 Barcelona Manchester United Rome",
     tweetUrl: "",
     xSearch: "Messi Ballon d'Or 2009 Barcelona treble"
+  },
+  {
+    id: "club-world-cup-2009",
+    year: 2009,
+    date: "19 Dec 2009",
+    era: "barca",
+    title: "FIFA Club World Cup — completing the sextuple",
+    description: "Barcelona defeat Argentine club Estudiantes de La Plata 2–1 after extra time in Abu Dhabi to become world champions. Messi scores the winning goal and is named Player of the Tournament, capping a calendar year in which Barça won six trophies — a sextuple no club has matched since.",
+    youtubeId: "",
+    youtubeSearch: "Messi Club World Cup 2009 Barcelona Estudiantes Abu Dhabi",
+    tweetUrl: "",
+    xSearch: "Messi Club World Cup 2009 Barcelona sextuple"
+  },
+  {
+    id: "second-ballon-dor-2010",
+    year: 2010,
+    date: "2010",
+    era: "barca",
+    title: "2nd Ballon d'Or — 34 La Liga goals",
+    description: "Messi wins his second Ballon d'Or for a season in which he scores 34 goals in La Liga alone, driving Barcelona to the Spanish title. At 23, the gap between him and every other player on the planet is already becoming difficult to quantify.",
+    youtubeId: "",
+    youtubeSearch: "Messi second Ballon d'Or 2010 award ceremony",
+    tweetUrl: "",
+    xSearch: "Messi 2nd Ballon d'Or 2010"
   },
   {
     id: "ucl-wembley-2011",
@@ -70,6 +130,18 @@ export const EVENTS = [
     youtubeSearch: "Messi goal Barcelona Manchester United Champions League final Wembley 2011",
     tweetUrl: "",
     xSearch: "Messi Champions League final Wembley 2011"
+  },
+  {
+    id: "third-ballon-dor-2011",
+    year: 2011,
+    date: "2011",
+    era: "barca",
+    title: "3rd consecutive Ballon d'Or",
+    description: "A third straight Ballon d'Or confirms Messi's complete dominance of world football. He finishes the 2010–11 season with 53 goals in all competitions — a new personal record — and is the driving force behind Barça's Champions League triumph at Wembley.",
+    youtubeId: "",
+    youtubeSearch: "Messi third Ballon d'Or 2011 ceremony award",
+    tweetUrl: "",
+    xSearch: "Messi 3rd Ballon d'Or 2011"
   },
   {
     id: "91-goals-2012",
@@ -120,6 +192,54 @@ export const EVENTS = [
     xSearch: "Messi 5th Ballon d'Or 2015 Barcelona treble"
   },
   {
+    id: "copa-america-runner-up-2015",
+    year: 2015,
+    date: "4 Jul 2015",
+    era: "argentina",
+    title: "Copa América runner-up — second final defeat to Chile",
+    description: "Argentina reach yet another Copa América final but lose to Chile on penalties for the first time, in Santiago. Messi scores in the shootout but two teammates miss, and Argentina's international drought stretches on. A second consecutive major final defeat intensifies questions about whether the trophy will ever arrive.",
+    youtubeId: "",
+    youtubeSearch: "Messi Argentina Copa America final 2015 Chile penalties",
+    tweetUrl: "",
+    xSearch: "Messi Copa America 2015 final Argentina Chile"
+  },
+  {
+    id: "club-world-cup-2015",
+    year: 2015,
+    date: "20 Dec 2015",
+    era: "barca",
+    title: "Second FIFA Club World Cup — Player of the Tournament",
+    description: "Barcelona beat River Plate 3–0 in Yokohama to win the Club World Cup for the second time, with Messi collecting the Golden Ball as player of the tournament. It is a fitting final chapter to a treble-winning year and Barça's most decorated era.",
+    youtubeId: "",
+    youtubeSearch: "Messi Club World Cup 2015 Barcelona River Plate Yokohama",
+    tweetUrl: "",
+    xSearch: "Messi Club World Cup 2015 Barcelona"
+  },
+  {
+    id: "copa-america-centenario-2016",
+    year: 2016,
+    date: "26 Jun 2016",
+    era: "argentina",
+    title: "Copa América Centenario runner-up — brief retirement",
+    description: "Argentina lose a third consecutive final to Chile on penalties in New Jersey. Messi misses his spot-kick and announces his international retirement in tears. The football world reacts with an outpouring of support — 'Don't go, Leo' — and he reverses the decision within weeks, eventually fulfilling his destiny in Qatar.",
+    youtubeId: "",
+    youtubeSearch: "Messi Copa America Centenario 2016 final retirement announcement Argentina Chile",
+    tweetUrl: "",
+    xSearch: "Messi retirement announcement Copa America 2016"
+  },
+  {
+    id: "ucl-semi-liverpool-2019",
+    year: 2019,
+    date: "30 Apr 2019",
+    era: "barca",
+    title: "UCL semi vs Liverpool — Messi's free-kick & Anfield collapse",
+    description: "Messi scores twice in the first leg at the Camp Nou — including a stunning direct free-kick — as Barcelona lead 3–0 going to Anfield. But in one of football's most extraordinary nights, Liverpool win the second leg 4–0 to reach the final on aggregate. The result stands as one of the most painful defeats of Messi's career.",
+    youtubeId: "",
+    youtubeSearch: "Messi free kick Barcelona Liverpool Champions League semi 2019",
+    tweetUrl: "",
+    xSearch: "Messi Liverpool UCL semi 2019 Anfield comeback"
+  },
+  {
     id: "sixth-ballon-dor-2019",
     year: 2019,
     date: "2019",
@@ -166,6 +286,18 @@ export const EVENTS = [
     youtubeSearch: "Messi 7th Ballon d'Or 2021 ceremony",
     tweetUrl: "",
     xSearch: "Messi 7th Ballon d'Or 2021"
+  },
+  {
+    id: "psg-ligue1-2022",
+    year: 2022,
+    date: "May 2022",
+    era: "psg",
+    title: "Ligue 1 title with PSG",
+    description: "Messi wins his first and only Ligue 1 championship as Paris Saint-Germain seal the French title. His debut season in Paris is difficult by his own standards — hampered by injury and COVID — but the league medal adds to a collection that now spans every major domestic league he has played in.",
+    youtubeId: "",
+    youtubeSearch: "Messi PSG Ligue 1 champion 2022",
+    tweetUrl: "",
+    xSearch: "Messi PSG Ligue 1 title 2022"
   },
   {
     id: "world-cup-2022",
