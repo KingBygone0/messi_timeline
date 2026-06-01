@@ -75,6 +75,21 @@ function render() {
   console.log(`Messi Timeline — ${sorted.length} events loaded`);
 }
 
+// ── Era counts ────────────────────────────────────────────────────────────────
+
+function initEraCounts() {
+  const counts = {};
+  sorted.forEach(e => { counts[e.era] = (counts[e.era] || 0) + 1; });
+
+  document.querySelectorAll('.era-filter__btn[data-era]').forEach(btn => {
+    const era = btn.dataset.era;
+    if (era === 'all') return;
+    const n = counts[era] || 0;
+    btn.innerHTML =
+      `${btn.textContent.trim()} <span class="era-filter__count" aria-hidden="true">${n}</span>`;
+  });
+}
+
 // ── Era filter ────────────────────────────────────────────────────────────────
 
 function initEraFilter() {
@@ -257,6 +272,62 @@ function initMedia() {
   });
 }
 
+// ── Deep-link hashes ─────────────────────────────────────────────────────────
+
+function initDeepLink() {
+  const hash = location.hash;
+  if (!hash.startsWith('#event-')) return;
+
+  const target = document.getElementById(hash.slice(1));
+  if (!target) return;
+
+  // Force-reveal the card so the highlight isn't blocked by scroll-reveal
+  target.style.animationDelay = '0ms';
+  target.classList.remove('card--hidden');
+  target.classList.add('card--visible');
+
+  setTimeout(() => {
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.classList.add('is-highlighted');
+  }, 350);
+}
+
+// ── Keyboard navigation ───────────────────────────────────────────────────────
+
+function initKeyboardNav() {
+  document.addEventListener('keydown', (e) => {
+    // Skip when typing, a modifier is held, or the modal is open
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (!document.getElementById('media-modal').hidden) return;
+
+    const down = e.key === 'j' || e.key === 'J';
+    const up   = e.key === 'k' || e.key === 'K';
+    if (!down && !up) return;
+
+    e.preventDefault();
+
+    const visible = [...document.querySelectorAll('.card:not(.is-faded)')];
+    if (!visible.length) return;
+
+    // Determine which card currently "owns" focus
+    const activeCard  = document.activeElement.closest('.card');
+    const currentIdx  = activeCard ? visible.indexOf(activeCard) : -1;
+
+    const nextIdx = down
+      ? Math.min(currentIdx + 1, visible.length - 1)
+      : Math.max(currentIdx - 1, 0);
+
+    // If already at the edge, do nothing
+    if (nextIdx === currentIdx && currentIdx !== -1) return;
+
+    const target   = visible[nextIdx];
+    const firstBtn = target.querySelector('.btn');
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    (firstBtn || target).focus({ preventScroll: true });
+  });
+}
+
 // ── Back to top ───────────────────────────────────────────────────────────────
 
 function initBackToTop() {
@@ -280,8 +351,11 @@ function initBackToTop() {
 // ── Boot ──────────────────────────────────────────────────────────────────────
 
 render();
+initEraCounts();
 initEraFilter();
 initScrollReveal();
 initSpineProgress();
+initDeepLink();
+initKeyboardNav();
 initBackToTop();
 initMedia();

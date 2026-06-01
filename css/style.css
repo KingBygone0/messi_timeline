@@ -218,6 +218,14 @@ body {
   font-weight: 600;
 }
 
+/* Event count badge inside each era button */
+.era-filter__count {
+  font-size: 0.65rem;
+  font-weight: 400;
+  opacity: 0.6;
+  margin-left: 0.2rem;
+}
+
 /* Era-tinted active states */
 .era-filter__btn[data-era="barca"].active     { background: var(--barca);     border-color: var(--barca);     color: #fff; }
 .era-filter__btn[data-era="psg"].active       { background: var(--psg);       border-color: var(--psg);       color: #fff; }
@@ -540,6 +548,35 @@ body {
 /* Override Twitter's default light iframe background */
 .modal__tweet-wrap .twitter-tweet {
   margin: 0 auto !important;
+}
+
+/* =============================================
+   DEEP-LINK HIGHLIGHT
+   ============================================= */
+@keyframes highlightFade {
+  0%   { opacity: 1; }
+  55%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Pseudo-element ring that fades out over 2 s */
+.card.is-highlighted::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 0.9rem;
+  border: 2px solid rgba(244, 244, 240, 0.75);
+  pointer-events: none;
+  z-index: 3;
+  animation: highlightFade 2s ease-out forwards;
+}
+
+/* =============================================
+   KEYBOARD NAV — card focus ring
+   ============================================= */
+.card:focus-visible,
+.card:focus {
+  outline: none; /* handled by is-highlighted or button focus-visible */
 }
 
 /* =============================================
