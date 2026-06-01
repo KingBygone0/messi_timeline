@@ -23,6 +23,19 @@
 }
 
 /* =============================================
+   KEYFRAMES
+   ============================================= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes cardReveal {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* =============================================
    RESET
    ============================================= */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -88,6 +101,7 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   position: relative;
+  animation: fadeUp 0.85s var(--ease-out) both;
 }
 
 .hero__subtitle {
@@ -97,6 +111,7 @@ body {
   color: var(--muted);
   margin-top: 1.25rem;
   letter-spacing: 0.01em;
+  animation: fadeUp 0.75s var(--ease-out) 0.15s both;
 }
 
 /* =============================================
@@ -104,6 +119,7 @@ body {
    ============================================= */
 .hero__stats {
   list-style: none;
+  animation: fadeUp 0.75s var(--ease-out) 0.28s both;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0;
@@ -227,7 +243,7 @@ body {
     transform 0.25s var(--ease-out),
     box-shadow 0.25s var(--ease-out),
     opacity 0.3s ease;
-  will-change: transform;
+  will-change: transform, opacity;
 }
 
 .card:hover {
@@ -497,12 +513,54 @@ body {
 }
 
 /* =============================================
+   SCROLL REVEAL
+   ============================================= */
+.card--hidden {
+  opacity: 0;
+  transform: translateY(26px);
+}
+
+/* animation-fill-mode: both keeps the card visible after reveal;
+   CSS transitions (hover) supersede animation values while running. */
+.card--visible {
+  animation: cardReveal 0.55s var(--ease-out) both;
+}
+
+/* =============================================
+   SPINE FILL (scroll progress)
+   ============================================= */
+.timeline__spine-fill {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: var(--spine-w);
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    var(--barca)      0%,
+    var(--barca)     46%,
+    var(--psg)       52%,
+    var(--argentina) 58%,
+    var(--argentina) 70%,
+    var(--miami)     80%,
+    var(--miami)    100%
+  );
+  /* starts fully hidden; JS updates clip-path on scroll */
+  clip-path: inset(0 0 100% 0);
+}
+
+/* =============================================
    FADED (era filter)
    ============================================= */
 .card.is-faded {
-  opacity: 0.12;
+  /* !important beats animation-fill values so fading always works */
+  opacity: 0.1 !important;
   pointer-events: none;
   transform: none !important;
+  transition: opacity 0.3s ease !important;
 }
 
 /* =============================================
@@ -532,6 +590,11 @@ body {
   }
 
   .timeline::before {
+    left: 0.875rem;
+    transform: none;
+  }
+
+  .timeline__spine-fill {
     left: 0.875rem;
     transform: none;
   }

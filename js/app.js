@@ -55,9 +55,78 @@ function buildCard(event, index) {
 // ── Render ────────────────────────────────────────────────────────────────────
 
 function render() {
-  const timeline = document.getElementById('timeline');
-  timeline.innerHTML = sorted.map(buildCard).join('');
+  document.getElementById('timeline').innerHTML = sorted.map(buildCard).join('');
   console.log(`Messi Timeline — ${sorted.length} events loaded`);
+}
+
+// ── Era filter ────────────────────────────────────────────────────────────────
+
+function initEraFilter() {
+  const nav   = document.querySelector('.era-filter');
+  const cards = () => document.querySelectorAll('.card');
+
+  nav.addEventListener('click', (e) => {
+    const btn = e.target.closest('.era-filter__btn');
+    if (!btn) return;
+
+    const era = btn.dataset.era;
+
+    nav.querySelectorAll('.era-filter__btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    cards().forEach(card => {
+      const match = era === 'all' || card.dataset.era === era;
+      card.classList.toggle('is-faded', !match);
+    });
+  });
+}
+
+// ── Scroll reveal ─────────────────────────────────────────────────────────────
+
+function initScrollReveal() {
+  const cards = document.querySelectorAll('.card');
+
+  // Hide all cards before first paint
+  cards.forEach(card => card.classList.add('card--hidden'));
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries.filter(e => e.isIntersecting);
+    visible.forEach((entry, i) => {
+      const card = entry.target;
+      // Stagger cards that enter together (e.g. initial page load)
+      card.style.animationDelay = `${i * 65}ms`;
+      card.classList.remove('card--hidden');
+      card.classList.add('card--visible');
+      observer.unobserve(card);
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px',
+  });
+
+  cards.forEach(card => observer.observe(card));
+}
+
+// ── Spine progress ────────────────────────────────────────────────────────────
+
+function initSpineProgress() {
+  const timeline = document.getElementById('timeline');
+
+  const fill = document.createElement('div');
+  fill.className = 'timeline__spine-fill';
+  fill.setAttribute('aria-hidden', 'true');
+  timeline.prepend(fill);
+
+  function update() {
+    const rect     = timeline.getBoundingClientRect();
+    const progress = (window.innerHeight * 0.55 - rect.top) / rect.height;
+    const pct      = Math.min(Math.max(progress, 0), 1);
+    // Clip from the bottom: inset(top right bottom left)
+    fill.style.clipPath = `inset(0 0 ${((1 - pct) * 100).toFixed(2)}% 0)`;
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
 }
 
 // ── Media (Phase 4) ───────────────────────────────────────────────────────────
@@ -72,8 +141,6 @@ function initMedia() {
 
   let twitterReady = false;
 
-  // ── Open / close ──────────────────────────────────────────────────────────
-
   function openModal() {
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -83,22 +150,17 @@ function initMedia() {
   function closeModal() {
     modal.hidden = true;
     document.body.style.overflow = '';
-    // Destroy iframe so video stops playing
     ytIframe.src = '';
     ytWrap.hidden = true;
-    // Clear tweet embed
     tweetWrap.innerHTML = '';
     tweetWrap.hidden = true;
   }
 
   backdrop.addEventListener('click', closeModal);
   closeBtn.addEventListener('click', closeModal);
-
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !modal.hidden) closeModal();
   });
-
-  // ── YouTube ───────────────────────────────────────────────────────────────
 
   function openYouTube(youtubeId) {
     tweetWrap.hidden = true;
@@ -107,26 +169,17 @@ function initMedia() {
     openModal();
   }
 
-  // ── X / Twitter ───────────────────────────────────────────────────────────
-
   function loadTwitterWidgets(container) {
-    if (twitterReady) {
-      window.twttr?.widgets.load(container);
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = 'https://platform.twitter.com/widgets.js';
-    script.async = true;
-    script.onload = () => {
-      twitterReady = true;
-      window.twttr?.widgets.load(container);
-    };
-    document.head.appendChild(script);
+    if (twitterReady) { window.twttr?.widgets.load(container); return; }
+    const s = document.createElement('script');
+    s.src   = 'https://platform.twitter.com/widgets.js';
+    s.async = true;
+    s.onload = () => { twitterReady = true; window.twttr?.widgets.load(container); };
+    document.head.appendChild(s);
   }
 
   function openTweet(tweetUrl) {
     ytWrap.hidden = true;
-    // Build the blockquote Twitter widgets.js will hydrate
     tweetWrap.innerHTML = `
       <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
         <a href="${tweetUrl}"></a>
@@ -135,8 +188,6 @@ function initMedia() {
     openModal();
     loadTwitterWidgets(tweetWrap);
   }
-
-  // ── Button delegation ─────────────────────────────────────────────────────
 
   document.getElementById('timeline').addEventListener('click', (e) => {
     const watchBtn = e.target.closest('.btn--watch');
@@ -147,11 +198,9 @@ function initMedia() {
       if (id) {
         openYouTube(id);
       } else {
-        const q = encodeURIComponent(watchBtn.dataset.youtubeSearch);
         window.open(
-          `https://www.youtube.com/results?search_query=${q}`,
-          '_blank',
-          'noopener,noreferrer'
+          `https://www.youtube.com/results?search_query=${encodeURIComponent(watchBtn.dataset.youtubeSearch)}`,
+          '_blank', 'noopener,noreferrer'
         );
       }
     }
@@ -161,11 +210,9 @@ function initMedia() {
       if (url) {
         openTweet(url);
       } else {
-        const q = encodeURIComponent(xBtn.dataset.xSearch);
         window.open(
-          `https://x.com/search?q=${q}`,
-          '_blank',
-          'noopener,noreferrer'
+          `https://x.com/search?q=${encodeURIComponent(xBtn.dataset.xSearch)}`,
+          '_blank', 'noopener,noreferrer'
         );
       }
     }
@@ -175,4 +222,7 @@ function initMedia() {
 // ── Boot ──────────────────────────────────────────────────────────────────────
 
 render();
+initEraFilter();
+initScrollReveal();
+initSpineProgress();
 initMedia();
