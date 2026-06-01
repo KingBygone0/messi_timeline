@@ -27,7 +27,7 @@ function buildCard(event, index) {
     >
       <div class="card__node" aria-hidden="true"></div>
       <div class="card__body">
-        <span class="card__era-label">${ERA_LABELS[event.era]}</span>
+        <span class="card__era-label" aria-hidden="true">${ERA_LABELS[event.era]}</span>
         <div class="card__meta">
           <span class="card__year">${event.year}</span>
           <time class="card__date">${esc(event.date)}</time>
@@ -62,8 +62,7 @@ function render() {
 // ── Era filter ────────────────────────────────────────────────────────────────
 
 function initEraFilter() {
-  const nav   = document.querySelector('.era-filter');
-  const cards = () => document.querySelectorAll('.card');
+  const nav = document.querySelector('.era-filter');
 
   nav.addEventListener('click', (e) => {
     const btn = e.target.closest('.era-filter__btn');
@@ -71,12 +70,16 @@ function initEraFilter() {
 
     const era = btn.dataset.era;
 
-    nav.querySelectorAll('.era-filter__btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    nav.querySelectorAll('.era-filter__btn').forEach(b => {
+      b.classList.toggle('active', b === btn);
+      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+    });
 
-    cards().forEach(card => {
+    document.querySelectorAll('.card').forEach(card => {
       const match = era === 'all' || card.dataset.era === era;
       card.classList.toggle('is-faded', !match);
+      // Hide faded cards from screen readers too
+      card.setAttribute('aria-hidden', match ? 'false' : 'true');
     });
   });
 }
@@ -84,25 +87,22 @@ function initEraFilter() {
 // ── Scroll reveal ─────────────────────────────────────────────────────────────
 
 function initScrollReveal() {
-  const cards = document.querySelectorAll('.card');
+  // Respect user's motion preference — skip animation entirely if reduced
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // Hide all cards before first paint
+  const cards = document.querySelectorAll('.card');
   cards.forEach(card => card.classList.add('card--hidden'));
 
   const observer = new IntersectionObserver((entries) => {
     const visible = entries.filter(e => e.isIntersecting);
     visible.forEach((entry, i) => {
       const card = entry.target;
-      // Stagger cards that enter together (e.g. initial page load)
       card.style.animationDelay = `${i * 65}ms`;
       card.classList.remove('card--hidden');
       card.classList.add('card--visible');
       observer.unobserve(card);
     });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px',
-  });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
   cards.forEach(card => observer.observe(card));
 }
@@ -121,7 +121,6 @@ function initSpineProgress() {
     const rect     = timeline.getBoundingClientRect();
     const progress = (window.innerHeight * 0.55 - rect.top) / rect.height;
     const pct      = Math.min(Math.max(progress, 0), 1);
-    // Clip from the bottom: inset(top right bottom left)
     fill.style.clipPath = `inset(0 0 ${((1 - pct) * 100).toFixed(2)}% 0)`;
   }
 
@@ -140,20 +139,43 @@ function initMedia() {
   const tweetWrap = document.getElementById('modal-tweet');
 
   let twitterReady = false;
+  let lastFocus    = null;
+
+  // Focus trap: keep Tab/Shift-Tab inside the modal
+  function onTrapKeydown(e) {
+    if (e.key !== 'Tab') return;
+    const sel = 'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])';
+    const focusable = [...modal.querySelectorAll(sel)].filter(
+      el => !el.closest('[hidden]') && getComputedStyle(el).display !== 'none'
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  }
 
   function openModal() {
+    lastFocus = document.activeElement;
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
+    modal.addEventListener('keydown', onTrapKeydown);
     closeBtn.focus();
   }
 
   function closeModal() {
     modal.hidden = true;
     document.body.style.overflow = '';
+    modal.removeEventListener('keydown', onTrapKeydown);
     ytIframe.src = '';
     ytWrap.hidden = true;
     tweetWrap.innerHTML = '';
     tweetWrap.hidden = true;
+    // Return focus to the button that opened the modal
+    lastFocus?.focus();
   }
 
   backdrop.addEventListener('click', closeModal);
@@ -182,7 +204,7 @@ function initMedia() {
     ytWrap.hidden = true;
     tweetWrap.innerHTML = `
       <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
-        <a href="${tweetUrl}"></a>
+        <a href="${tweetUrl}">View post on X</a>
       </blockquote>`;
     tweetWrap.hidden = false;
     openModal();

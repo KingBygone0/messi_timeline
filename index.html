@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <a href="#timeline" class="skip-link">Skip to timeline</a>
+
     <header class="hero" role="banner">
       <h1 class="hero__name">MESSI</h1>
       <p class="hero__subtitle">The Greatest Career in Football</p>
@@ -25,11 +27,11 @@
     </header>
 
     <nav class="era-filter" aria-label="Filter by era">
-      <button class="era-filter__btn active" data-era="all">All</button>
-      <button class="era-filter__btn" data-era="barca">Barcelona</button>
-      <button class="era-filter__btn" data-era="psg">PSG</button>
-      <button class="era-filter__btn" data-era="miami">Inter Miami</button>
-      <button class="era-filter__btn" data-era="argentina">Argentina</button>
+      <button class="era-filter__btn active" data-era="all"       aria-pressed="true" >All</button>
+      <button class="era-filter__btn"        data-era="barca"     aria-pressed="false">Barcelona</button>
+      <button class="era-filter__btn"        data-era="psg"       aria-pressed="false">PSG</button>
+      <button class="era-filter__btn"        data-era="miami"     aria-pressed="false">Inter Miami</button>
+      <button class="era-filter__btn"        data-era="argentina" aria-pressed="false">Argentina</button>
     </nav>
 
     <main class="timeline" id="timeline" role="main">
