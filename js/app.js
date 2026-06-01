@@ -1,10 +1,16 @@
 import { EVENTS } from './data.js';
 
-// Sort chronologically; stable sort preserves insertion order within the same year
 const sorted = [...EVENTS].sort((a, b) => a.year - b.year);
 
+const ERA_LABELS = {
+  barca:     'Barcelona',
+  psg:       'PSG',
+  miami:     'Inter Miami',
+  argentina: 'Argentina',
+};
+
 function esc(str) {
-  return str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function buildCard(event, index) {
@@ -17,6 +23,7 @@ function buildCard(event, index) {
     >
       <div class="card__node" aria-hidden="true"></div>
       <div class="card__body">
+        <span class="card__era-label">${ERA_LABELS[event.era]}</span>
         <div class="card__meta">
           <span class="card__year">${event.year}</span>
           <time class="card__date">${esc(event.date)}</time>
