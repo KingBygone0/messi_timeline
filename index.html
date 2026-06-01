@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Messi Timeline</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz@1,9..144&family=Hanken+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="hero" role="banner">
+      <h1 class="hero__name">MESSI</h1>
+      <p class="hero__subtitle">The Greatest Career in Football</p>
+      <ul class="hero__stats" aria-label="Career statistics">
+        <li>8 Ballon d'Ors</li>
+        <li>1 World Cup</li>
+        <li>1 Copa América</li>
+        <li>800+ Career Goals</li>
+      </ul>
+    </header>
+
+    <nav class="era-filter" aria-label="Filter by era">
+      <button class="era-filter__btn active" data-era="all">All</button>
+      <button class="era-filter__btn" data-era="barca">Barcelona</button>
+      <button class="era-filter__btn" data-era="psg">PSG</button>
+      <button class="era-filter__btn" data-era="miami">Inter Miami</button>
+      <button class="era-filter__btn" data-era="argentina">Argentina</button>
+    </nav>
+
+    <main class="timeline" id="timeline" role="main">
+      <!-- Cards injected by app.js -->
+    </main>
+
+    <!-- YouTube lightbox modal -->
+    <div
+      class="modal"
+      id="yt-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Video player"
+      hidden
+    >
+      <div class="modal__backdrop"></div>
+      <div class="modal__content">
+        <button class="modal__close" aria-label="Close video">&times;</button>
+        <div class="modal__iframe-wrap">
+          <iframe
+            id="yt-iframe"
+            src=""
+            title="YouTube video"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

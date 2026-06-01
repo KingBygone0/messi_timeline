@@ -1,0 +1,19 @@
+/* Phase 0 placeholder — full styles added in Phase 3 */
+:root {
+  --bg: #0a0a0f;
+  --surface: #14141c;
+  --text: #f4f4f0;
+  --muted: #6b6b7a;
+  --barca: #a50044;
+  --psg: #0a1f44;
+  --miami: #ff5ca8;
+  --argentina: #6cace4;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Hanken Grotesk', sans-serif;
+}
