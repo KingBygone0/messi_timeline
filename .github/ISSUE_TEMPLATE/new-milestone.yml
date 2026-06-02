@@ -1,0 +1,83 @@
+name: New Messi milestone
+description: Add a new achievement to the timeline. Filling this in publishes it automatically.
+title: "[Milestone] "
+labels: ["new-milestone"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill in the milestone below. Only the first five fields are required —
+        media links are optional (leave blank to use an automatic search fallback).
+        When you submit, a bot adds it to the site within a minute and closes this issue.
+  - type: input
+    id: year
+    attributes:
+      label: Year
+      placeholder: "2027"
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      description: Human-readable, e.g. "14 Jul 2027" or "Jun 2027".
+      placeholder: "14 Jul 2027"
+    validations:
+      required: true
+  - type: dropdown
+    id: era
+    attributes:
+      label: Era
+      description: Drives the accent colour.
+      options:
+        - Barcelona
+        - PSG
+        - Inter Miami
+        - Argentina
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: Short headline.
+      placeholder: "Wins his 9th Ballon d'Or"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: One to three sentences.
+    validations:
+      required: true
+  - type: input
+    id: youtube_id
+    attributes:
+      label: YouTube video ID (optional)
+      description: The 11-char id from youtube.com/watch?v=XXXXXXXXXXX — or paste the full URL and I'll extract it. Leave blank if unknown.
+  - type: input
+    id: youtube_search
+    attributes:
+      label: YouTube search terms (optional)
+      description: Defaults to the title if left blank.
+  - type: input
+    id: tweet_url
+    attributes:
+      label: Tweet/X URL (optional)
+      description: Full URL like https://x.com/user/status/123. Leave blank if unknown.
+  - type: input
+    id: x_search
+    attributes:
+      label: X search terms (optional)
+      description: Defaults to the title if left blank.
+  - type: input
+    id: instagram_url
+    attributes:
+      label: Instagram URL (optional)
+      description: Full URL like https://www.instagram.com/p/XXXX/. Leave blank if unknown.
+  - type: input
+    id: instagram_search
+    attributes:
+      label: Instagram search terms (optional)
+      description: Defaults to the title if left blank.

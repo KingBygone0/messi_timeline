@@ -23,6 +23,19 @@ python3 -m http.server 8000
 
 ## Add a milestone
 
+### Easiest: file an issue (no code)
+
+1. Go to the repo's **Issues** tab → **New issue** → **New Messi milestone**.
+2. Fill in the form (year, date, era, title, description; media links optional).
+3. Submit. A GitHub Action parses it, appends it to `js/data.js`, commits, and
+   closes the issue — the new card is live on the site within a minute.
+
+If a field is wrong (e.g. a duplicate, or a bad date), the bot comments on the
+issue explaining what to fix; edit the issue and it retries automatically. This
+runs free on public-repo Actions — no API key needed.
+
+### Manual: edit the data file
+
 Open `js/data.js` and append an object to the `EVENTS` array. The page re-renders automatically — no other files need changing.
 
 ```js
