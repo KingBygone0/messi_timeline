@@ -47,6 +47,12 @@ function buildCard(event, index) {
             data-x-search="${esc(event.xSearch)}"
             aria-label="See on X: ${esc(event.title)}"
           >&#120143;&thinsp;See on X</button>
+          <button
+            class="btn btn--instagram"
+            data-instagram-url="${esc(event.instagramUrl)}"
+            data-instagram-search="${esc(event.instagramSearch)}"
+            aria-label="See on Instagram: ${esc(event.title)}"
+          >&#128247;&thinsp;Instagram</button>
         </div>
       </div>
     </article>`;
@@ -265,6 +271,23 @@ function initMedia() {
       } else {
         window.open(
           `https://x.com/search?q=${encodeURIComponent(xBtn.dataset.xSearch)}`,
+          '_blank', 'noopener,noreferrer'
+        );
+      }
+    }
+
+    const igBtn = e.target.closest('.btn--instagram');
+    if (igBtn) {
+      const url = igBtn.dataset.instagramUrl;
+      if (url) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        // Search Instagram via Google (no login required)
+        const q = encodeURIComponent(
+          `site:instagram.com ${igBtn.dataset.instagramSearch}`
+        );
+        window.open(
+          `https://www.google.com/search?q=${q}`,
           '_blank', 'noopener,noreferrer'
         );
       }
