@@ -72,6 +72,43 @@ body {
 }
 
 /* =============================================
+   AMBIENT BACKGROUND
+   Era-colored glows + film grain, fixed behind all content so the page
+   feels lit and alive instead of flat black. Cards sit on opaque surfaces
+   so text contrast is unaffected.
+   ============================================= */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -10%;            /* oversized so the slow drift never reveals edges */
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 620px at 50% -8%,  rgba(108, 172, 228, 0.20), transparent 60%),  /* argentina sky */
+    radial-gradient(900px 520px at 92% 12%,   rgba(165,   0,  68, 0.18), transparent 62%),  /* barça garnet */
+    radial-gradient(820px 520px at 6% 58%,    rgba(255,  92, 168, 0.14), transparent 60%),  /* miami pink */
+    radial-gradient(820px 560px at 80% 92%,   rgba( 30,  79, 196, 0.16), transparent 62%),  /* psg blue */
+    linear-gradient(180deg, #0d1018 0%, var(--bg) 55%);
+  animation: bgDrift 32s ease-in-out infinite alternate;
+}
+
+@keyframes bgDrift {
+  from { transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
+  to   { transform: translate3d( 1.5%,  1%, 0) scale(1.06); }
+}
+
+/* Fine film grain for an editorial print texture */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* =============================================
    HERO
    ============================================= */
 .hero {
@@ -79,16 +116,23 @@ body {
   text-align: center;
   padding: 7rem 2rem 4rem;
   overflow: hidden;
+  /* Giant translucent "10" jersey number behind the headline */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 420'%3E%3Ctext x='320' y='360' font-family='Impact,Haettenschweiler,sans-serif' font-size='400' font-weight='900' text-anchor='middle' fill='none' stroke='%23ffffff' stroke-width='3' opacity='0.06'%3E10%3C/text%3E%3C/svg%3E")
+    center 38% / auto 135% no-repeat;
 }
 
-/* Subtle spotlight behind the headline */
+/* Stadium light beams + a warm spotlight behind the headline */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 55% at 50% 38%,
-      rgba(165, 0, 68, 0.10) 0%,
+    linear-gradient(118deg, transparent 44%, rgba(108, 172, 228, 0.07) 47%, transparent 50%),
+    linear-gradient( 62deg, transparent 50%, rgba(255, 255, 255, 0.05) 53%, transparent 56%),
+    linear-gradient(100deg, transparent 60%, rgba(255,  92, 168, 0.05) 63%, transparent 66%),
+    radial-gradient(ellipse 75% 58% at 50% 36%,
+      rgba(165, 0, 68, 0.16) 0%,
       transparent 70%);
   pointer-events: none;
 }
