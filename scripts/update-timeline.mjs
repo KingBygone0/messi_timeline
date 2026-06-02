@@ -77,13 +77,34 @@ If there are no new milestones, output an empty array [].
 [ ... ]
 <<<END>>>`;
 
-const res = await client.messages.create({
-  model: MODEL,
-  max_tokens: 4096,
-  system,
-  tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 8 }],
-  messages: [{ role: 'user', content: prompt }],
-});
+if (!process.env.ANTHROPIC_API_KEY) {
+  console.error('ERROR: ANTHROPIC_API_KEY is not set. Add it as a repo secret named ANTHROPIC_API_KEY.');
+  process.exit(1);
+}
+
+let res;
+try {
+  res = await client.messages.create({
+    model: MODEL,
+    max_tokens: 4096,
+    system,
+    tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 8 }],
+    messages: [{ role: 'user', content: prompt }],
+  });
+} catch (err) {
+  const status = err?.status;
+  let hint = '';
+  const msg = err?.message || '';
+  if (/credit balance|too low|billing|purchase credits/i.test(msg)) hint = 'No API credits. Go to console.anthropic.com -> Plans & Billing and add credits/a payment method. The API is pay-as-you-go and separate from any Claude.ai subscription.';
+  else if (status === 401) hint = 'The API key is invalid or revoked. Create a new key at console.anthropic.com and update the ANTHROPIC_API_KEY secret.';
+  else if (status === 403) hint = 'Access forbidden — usually no API credits. Add credits at console.anthropic.com -> Billing (the API is separate from a Claude.ai subscription).';
+  else if (status === 400 && /web_search|tool/i.test(msg)) hint = 'The web_search tool was rejected. Your account may not have web search enabled, or the tool version string needs updating.';
+  else if (status === 404 && /model/i.test(err?.message || '')) hint = `The model "${MODEL}" was not found. Set the ANTHROPIC_MODEL env in the workflow to a valid id.`;
+  else hint = 'Unexpected API error. See the message above.';
+  console.error(`API call failed (HTTP ${status ?? '?'}): ${err?.message ?? err}`);
+  console.error(`HINT: ${hint}`);
+  process.exit(1);
+}
 
 const text = res.content
   .filter(b => b.type === 'text')
