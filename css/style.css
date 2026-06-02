@@ -277,6 +277,61 @@ body::after {
 .era-filter__btn[data-era="argentina"].active { background: var(--argentina); border-color: var(--argentina); color: #0a0a0f; }
 
 /* =============================================
+   ACHIEVEMENT FILTER (secondary row, below the era filter)
+   ============================================= */
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.85rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 10, 15, 0.6);
+}
+
+.tag-filter[hidden] { display: none; }
+
+.tag-filter__btn {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 2rem;
+  padding: 0.28rem 0.95rem;
+  font-family: inherit;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.18s, background 0.18s, border-color 0.18s;
+}
+
+.tag-filter__btn:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.tag-filter__btn:focus-visible {
+  color: var(--text);
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.tag-filter__btn.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+  font-weight: 600;
+}
+
+.tag-filter__count {
+  font-size: 0.6rem;
+  font-weight: 400;
+  opacity: 0.6;
+  margin-left: 0.15rem;
+}
+
+/* =============================================
    TIMELINE
    ============================================= */
 .timeline {
@@ -520,6 +575,22 @@ body::after {
   color: #e1306c;
   border-color: rgba(225, 48, 108, 0.5);
   background: rgba(225, 48, 108, 0.06);
+}
+
+.btn--share {
+  background: transparent;
+  color: var(--muted);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.btn--share:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.btn--share.is-copied {
+  color: var(--argentina);
+  border-color: var(--argentina);
 }
 
 /* =============================================
@@ -813,6 +884,50 @@ body::after {
 .back-to-top:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 2px;
+}
+
+/* =============================================
+   STAT COUNT-UP
+   tabular numerals keep the strip from reflowing while the value animates
+   ============================================= */
+.stat-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* =============================================
+   SITE FOOTER / KEYBOARD HINT
+   ============================================= */
+.site-footer {
+  text-align: center;
+  padding: 2.5rem 2rem 3.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.kbd-hint {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.kbd-hint kbd {
+  display: inline-block;
+  min-width: 1.4em;
+  padding: 0.1rem 0.4rem;
+  margin: 0 0.1rem;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text);
+  background: var(--surface-hi);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 0.35rem;
+}
+
+/* Touch devices have no physical keyboard — hide the hint there */
+@media (hover: none) and (pointer: coarse) {
+  .kbd-hint { display: none; }
 }
 
 /* =============================================

@@ -9,8 +9,21 @@ const ERA_LABELS = {
   argentina: 'Argentina',
 };
 
+// Achievement tags → user-facing labels, in the order they appear in the filter.
+const TAG_LABELS = {
+  'ballon-dor': "Ballon d'Or",
+  'world-cup':  'World Cup',
+  'trophy':     'Trophies',
+  'record':     'Records',
+};
+const TAG_ORDER = ['ballon-dor', 'world-cup', 'trophy', 'record'];
+
+// Active filter state, shared between the era and achievement filters.
+let activeEra = 'all';
+let activeTag = 'all';
+
 function esc(str) {
-  return str
+  return String(str ?? '')
     .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
@@ -19,10 +32,12 @@ function esc(str) {
 
 function buildCard(event, index) {
   const side = index % 2 === 0 ? 'left' : 'right';
+  const tags = (event.tags ?? []).join(' ');
   return `
     <article
       class="card card--${side} card--${event.era}"
       data-era="${event.era}"
+      data-tags="${esc(tags)}"
       id="event-${event.id}"
     >
       <div class="card__node" aria-hidden="true"></div>
@@ -53,6 +68,11 @@ function buildCard(event, index) {
             data-instagram-search="${esc(event.instagramSearch)}"
             aria-label="See on Instagram: ${esc(event.title)}"
           >&#128247;&thinsp;Instagram</button>
+          <button
+            class="btn btn--share"
+            data-event-id="${esc(event.id)}"
+            aria-label="Copy a link to this milestone: ${esc(event.title)}"
+          >&#128279;&thinsp;Share</button>
         </div>
       </div>
     </article>`;
@@ -69,6 +89,15 @@ function buildSeparator(year) {
 // ── Render ────────────────────────────────────────────────────────────────────
 
 function render() {
+  // Guard: duplicate ids break deep-linking (two cards share one #event-… anchor).
+  const seen = new Set();
+  sorted.forEach(e => {
+    if (seen.has(e.id)) {
+      console.warn(`Messi Timeline — duplicate event id "${e.id}"; deep-links will only reach the first.`);
+    }
+    seen.add(e.id);
+  });
+
   const items = [];
   sorted.forEach((event, index) => {
     // Inject a year marker whenever there is a gap of 2+ years
@@ -96,29 +125,94 @@ function initEraCounts() {
   });
 }
 
-// ── Era filter ────────────────────────────────────────────────────────────────
+// ── Filters: era + achievement (combined with AND logic) ───────────────────────
+
+// Mark one button in a nav as the active selection.
+function setActiveBtn(nav, activeBtn) {
+  nav.querySelectorAll('button').forEach(b => {
+    const on = b === activeBtn;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+
+// Fade any card that fails the era OR the achievement filter.
+function applyFilters() {
+  document.querySelectorAll('.card').forEach(card => {
+    const eraMatch = activeEra === 'all' || card.dataset.era === activeEra;
+    const tags     = (card.dataset.tags || '').split(' ').filter(Boolean);
+    const tagMatch = activeTag === 'all' || tags.includes(activeTag);
+    const match    = eraMatch && tagMatch;
+    card.classList.toggle('is-faded', !match);
+    card.setAttribute('aria-hidden', match ? 'false' : 'true');
+  });
+  syncUrl();
+}
+
+// Reflect the active filters in the URL so a filtered view is shareable.
+function syncUrl() {
+  const params = new URLSearchParams(location.search);
+  activeEra === 'all' ? params.delete('era') : params.set('era', activeEra);
+  activeTag === 'all' ? params.delete('tag') : params.set('tag', activeTag);
+  const qs = params.toString();
+  history.replaceState(null, '', location.pathname + (qs ? `?${qs}` : '') + location.hash);
+}
 
 function initEraFilter() {
   const nav = document.querySelector('.era-filter');
-
   nav.addEventListener('click', (e) => {
     const btn = e.target.closest('.era-filter__btn');
     if (!btn) return;
-
-    const era = btn.dataset.era;
-
-    nav.querySelectorAll('.era-filter__btn').forEach(b => {
-      b.classList.toggle('active', b === btn);
-      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
-    });
-
-    document.querySelectorAll('.card').forEach(card => {
-      const match = era === 'all' || card.dataset.era === era;
-      card.classList.toggle('is-faded', !match);
-      // Hide faded cards from screen readers too
-      card.setAttribute('aria-hidden', match ? 'false' : 'true');
-    });
+    activeEra = btn.dataset.era;
+    setActiveBtn(nav, btn);
+    applyFilters();
   });
+}
+
+// Build the achievement filter from the tags that actually appear in the data,
+// so it stays correct as milestones are added (and shows nothing if none have tags).
+function initTagFilter() {
+  const nav = document.querySelector('.tag-filter');
+  if (!nav) return;
+
+  const counts = {};
+  sorted.forEach(e => (e.tags ?? []).forEach(t => { counts[t] = (counts[t] || 0) + 1; }));
+  const present = TAG_ORDER.filter(t => counts[t]);
+  if (!present.length) return;
+
+  nav.innerHTML = [
+    `<button class="tag-filter__btn active" data-tag="all" aria-pressed="true">All</button>`,
+    ...present.map(t =>
+      `<button class="tag-filter__btn" data-tag="${t}" aria-pressed="false">` +
+      `${TAG_LABELS[t]} <span class="tag-filter__count" aria-hidden="true">${counts[t]}</span></button>`
+    ),
+  ].join('');
+  nav.hidden = false;
+
+  nav.addEventListener('click', (e) => {
+    const btn = e.target.closest('.tag-filter__btn');
+    if (!btn) return;
+    activeTag = btn.dataset.tag;
+    setActiveBtn(nav, btn);
+    applyFilters();
+  });
+}
+
+// Restore filters from ?era=…&tag=… on load so shared/bookmarked URLs work.
+function initFiltersFromUrl() {
+  const params = new URLSearchParams(location.search);
+  const era = params.get('era');
+  const tag = params.get('tag');
+
+  if (era) {
+    const btn = document.querySelector(`.era-filter__btn[data-era="${CSS.escape(era)}"]`);
+    if (btn) { activeEra = era; setActiveBtn(document.querySelector('.era-filter'), btn); }
+  }
+  if (tag) {
+    const btn = document.querySelector(`.tag-filter__btn[data-tag="${CSS.escape(tag)}"]`);
+    if (btn) { activeTag = tag; setActiveBtn(document.querySelector('.tag-filter'), btn); }
+  }
+  applyFilters();
 }
 
 // ── Scroll reveal ─────────────────────────────────────────────────────────────
@@ -292,6 +386,71 @@ function initMedia() {
         );
       }
     }
+
+    const shareBtn = e.target.closest('.btn--share');
+    if (shareBtn) {
+      const id  = shareBtn.dataset.eventId;
+      const url = `${location.origin}${location.pathname}#event-${id}`;
+      copyShareLink(shareBtn, url);
+    }
+  });
+}
+
+// ── Share: copy a deep link to the clipboard, with a transient confirmation ─────
+
+function copyShareLink(btn, url) {
+  const confirm = () => {
+    if (!btn.dataset.label) btn.dataset.label = btn.innerHTML;
+    btn.classList.add('is-copied');
+    btn.innerHTML = '&#10003;&thinsp;Copied';
+    clearTimeout(btn._copyTimer);
+    btn._copyTimer = setTimeout(() => {
+      btn.innerHTML = btn.dataset.label;
+      btn.classList.remove('is-copied');
+    }, 1600);
+  };
+
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(url).then(confirm).catch(() => fallbackCopy(url, confirm));
+  } else {
+    fallbackCopy(url, confirm);
+  }
+}
+
+function fallbackCopy(text, onDone) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'absolute';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); onDone(); } catch { /* clipboard blocked */ }
+  document.body.removeChild(ta);
+}
+
+// ── Stat strip count-up ─────────────────────────────────────────────────────────
+
+function initStatCount() {
+  // Numbers are already correct in the HTML; only animate when motion is allowed.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const to = parseInt(el.dataset.to, 10);
+    if (!Number.isFinite(to)) return;
+
+    const duration = 1100;
+    const start = performance.now();
+    el.textContent = '0';
+
+    function step(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      el.textContent = Math.round(to * eased);
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = String(to);
+    }
+    requestAnimationFrame(step);
   });
 }
 
@@ -376,6 +535,9 @@ function initBackToTop() {
 render();
 initEraCounts();
 initEraFilter();
+initTagFilter();
+initFiltersFromUrl();   // must run after both filter rows exist
+initStatCount();
 initScrollReveal();
 initSpineProgress();
 initDeepLink();

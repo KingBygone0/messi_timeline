@@ -86,6 +86,12 @@ Example object:
 
 Sort `EVENTS` chronologically (ascending) before rendering.
 
+> **Note (post-v1):** the live schema has since gained `instagramUrl` / `instagramSearch`
+> (same embed-or-search rules as X) and an optional `tags` array
+> (`"ballon-dor" | "world-cup" | "trophy" | "record"`) that powers an achievement
+> filter. `js/data.js` is the single source of truth for content — this spec and the
+> milestone table in §9 document the original build and are **not** kept in sync.
+
 ## 6. Media Rules (IMPORTANT — read before writing data.js)
 
 - **Never fabricate `youtubeId` or `tweetUrl` values.** A guessed ID produces a dead

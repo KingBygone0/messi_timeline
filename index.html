@@ -6,16 +6,17 @@
     <title>The Messi Timeline</title>
 
     <!-- SEO / social -->
-    <meta name="description" content="Lionel Messi's career from his 2004 La Liga debut to the 2022 World Cup triumph and beyond — 23 milestones, each with YouTube highlights and X posts." />
+    <meta name="description" content="Lionel Messi's career as an interactive timeline — from his 2004 La Liga debut through World Cup glory in Qatar to his Inter Miami years. Every milestone links to YouTube highlights and X posts." />
     <meta property="og:type"        content="website" />
     <meta property="og:title"       content="The Messi Timeline" />
-    <meta property="og:description" content="Lionel Messi's career from his 2004 La Liga debut to the 2022 World Cup triumph and beyond — 23 milestones, each with YouTube highlights and X posts." />
-    <!-- Replace the og:image value with the full absolute URL after deploying -->
-    <meta property="og:image"       content="assets/og-image.svg" />
+    <meta property="og:description" content="Lionel Messi's career as an interactive timeline — from his 2004 La Liga debut through World Cup glory in Qatar to his Inter Miami years. Every milestone links to YouTube highlights and X posts." />
+    <!-- og:image must be an absolute URL for X/Facebook/etc. to render it.
+         After deploying, change this to e.g. https://YOUR_DOMAIN/assets/og-image.png -->
+    <meta property="og:image"       content="assets/og-image.png" />
     <meta name="twitter:card"        content="summary_large_image" />
     <meta name="twitter:title"       content="The Messi Timeline" />
-    <meta name="twitter:description" content="Lionel Messi's career from his 2004 La Liga debut to the 2022 World Cup triumph and beyond — 23 milestones, each with YouTube highlights and X posts." />
-    <meta name="twitter:image"       content="assets/og-image.svg" />
+    <meta name="twitter:description" content="Lionel Messi's career as an interactive timeline — from his 2004 La Liga debut through World Cup glory in Qatar to his Inter Miami years. Every milestone links to YouTube highlights and X posts." />
+    <meta name="twitter:image"       content="assets/og-image.png" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
@@ -35,10 +36,10 @@
       <h1 class="hero__name">MESSI</h1>
       <p class="hero__subtitle">The Greatest Career in Football</p>
       <ul class="hero__stats" aria-label="Career statistics">
-        <li>8 Ballon d'Ors</li>
-        <li>1 World Cup</li>
-        <li>1 Copa América</li>
-        <li>800+ Career Goals</li>
+        <li><span class="stat-num" data-to="8">8</span> Ballon d'Ors</li>
+        <li><span class="stat-num" data-to="1">1</span> World Cup</li>
+        <li><span class="stat-num" data-to="2">2</span> Copa Américas</li>
+        <li><span class="stat-num" data-to="800">800</span>+ Career Goals</li>
       </ul>
     </header>
 
@@ -49,6 +50,9 @@
       <button class="era-filter__btn"        data-era="miami"     aria-pressed="false">Inter Miami</button>
       <button class="era-filter__btn"        data-era="argentina" aria-pressed="false">Argentina</button>
     </nav>
+
+    <!-- Achievement filter — buttons injected by app.js from the tags present in data -->
+    <nav class="tag-filter" aria-label="Filter by achievement" hidden></nav>
 
     <main class="timeline" id="timeline" role="main">
       <!-- Cards injected by app.js -->
@@ -61,6 +65,12 @@
       aria-hidden="true"
       tabindex="-1"
     >&#8593;</button>
+
+    <footer class="site-footer">
+      <p class="kbd-hint">
+        Tip: press <kbd>J</kbd> / <kbd>K</kbd> to jump between milestones.
+      </p>
+    </footer>
 
     <!-- Media modal — YouTube or X embed -->
     <div
