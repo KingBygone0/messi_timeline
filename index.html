@@ -43,16 +43,21 @@
       </ul>
     </header>
 
-    <nav class="era-filter" aria-label="Filter by era">
-      <button class="era-filter__btn active" data-era="all"       aria-pressed="true" >All</button>
-      <button class="era-filter__btn"        data-era="barca"     aria-pressed="false">Barcelona</button>
-      <button class="era-filter__btn"        data-era="psg"       aria-pressed="false">PSG</button>
-      <button class="era-filter__btn"        data-era="miami"     aria-pressed="false">Inter Miami</button>
-      <button class="era-filter__btn"        data-era="argentina" aria-pressed="false">Argentina</button>
-    </nav>
+    <!-- Single sticky filter bar: era group + divider + achievement group -->
+    <div class="filters">
+      <nav class="era-filter" aria-label="Filter by era">
+        <button class="era-filter__btn active" data-era="all"       aria-pressed="true" >All</button>
+        <button class="era-filter__btn"        data-era="barca"     aria-pressed="false">Barcelona</button>
+        <button class="era-filter__btn"        data-era="psg"       aria-pressed="false">PSG</button>
+        <button class="era-filter__btn"        data-era="miami"     aria-pressed="false">Inter Miami</button>
+        <button class="era-filter__btn"        data-era="argentina" aria-pressed="false">Argentina</button>
+      </nav>
 
-    <!-- Achievement filter — buttons injected by app.js from the tags present in data -->
-    <nav class="tag-filter" aria-label="Filter by achievement" hidden></nav>
+      <span class="filters__divider" aria-hidden="true" hidden></span>
+
+      <!-- Achievement buttons injected by app.js from the tags present in data -->
+      <nav class="tag-filter" aria-label="Filter by achievement" hidden></nav>
+    </div>
 
     <main class="timeline" id="timeline" role="main">
       <!-- Cards injected by app.js -->

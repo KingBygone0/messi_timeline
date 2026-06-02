@@ -41,8 +41,10 @@ function buildCard(event, index) {
       id="event-${event.id}"
     >
       <div class="card__node" aria-hidden="true"></div>
+      <div class="card__banner" aria-hidden="true">
+        <span class="card__era-label">${ERA_LABELS[event.era]}</span>
+      </div>
       <div class="card__body">
-        <span class="card__era-label" aria-hidden="true">${ERA_LABELS[event.era]}</span>
         <div class="card__meta">
           <span class="card__year">${event.year}</span>
           <time class="card__date">${esc(event.date)}</time>
@@ -182,6 +184,7 @@ function initTagFilter() {
     ),
   ].join('');
   nav.hidden = false;
+  document.querySelector('.filters__divider')?.removeAttribute('hidden');
 
   nav.addEventListener('click', (e) => {
     const btn = e.target.closest('.tag-filter__btn');

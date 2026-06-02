@@ -214,19 +214,36 @@ body::after {
 /* =============================================
    ERA FILTER
    ============================================= */
+/* Single sticky bar holding both filter groups */
+.filters {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.85rem;
+  padding: 1rem 2rem;
+  background: rgba(10, 10, 15, 0.82);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.filters__divider {
+  width: 1px;
+  align-self: stretch;
+  min-height: 1.4rem;
+  background: var(--border);
+}
+.filters__divider[hidden] { display: none; }
+
 .era-filter {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
-  padding: 1.25rem 2rem;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .era-filter__btn {
@@ -285,12 +302,14 @@ body::after {
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
-  padding: 0.85rem 2rem;
-  border-bottom: 1px solid var(--border);
-  background: rgba(10, 10, 15, 0.6);
 }
 
 .tag-filter[hidden] { display: none; }
+
+/* On narrow screens the groups stack, so the vertical divider just gets in the way */
+@media (max-width: 600px) {
+  .filters__divider { display: none; }
+}
 
 .tag-filter__btn {
   background: transparent;
@@ -421,6 +440,54 @@ body::after {
   box-shadow: 0 8px 32px rgba(108, 172, 228, 0.20);
 }
 
+/* Per-era accent, consumed by the decorative banner */
+.card--barca     { --accent: var(--barca);     }
+.card--psg       { --accent: var(--psg);        }
+.card--miami     { --accent: var(--miami);      }
+.card--argentina { --accent: var(--argentina);  }
+
+/* =============================================
+   CARD BANNER (decorative, era-themed graphic)
+   ============================================= */
+.card__banner {
+  position: relative;
+  height: 84px;
+  border-radius: 0.75rem 0.75rem 0 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(130% 150% at 88% -30%,
+      color-mix(in srgb, var(--accent) 60%, transparent), transparent 62%),
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--accent) 30%, var(--surface-hi)) 0%, var(--surface-hi) 62%);
+}
+
+/* Diagonal hairlines — editorial, energetic texture */
+.card__banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    115deg,
+    rgba(255,255,255,0.05) 0 1px,
+    transparent 1px 15px
+  );
+}
+
+/* Stylised pitch / centre-circle motif in the era accent */
+.card__banner::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -28px;
+  width: 132px;
+  height: 132px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  opacity: 0.55;
+}
+
 /* =============================================
    SPINE NODE
    ============================================= */
@@ -451,19 +518,21 @@ body::after {
    CARD BODY
    ============================================= */
 .card__body {
-  padding: 1.5rem 1.75rem 1.75rem;
+  padding: 1.25rem 1.75rem 1.75rem;
 }
 
-/* Era label pill */
+/* Era label pill — overlaid on the banner */
 .card__era-label {
-  display: inline-block;
+  position: absolute;
+  left: 1rem;
+  bottom: 0.7rem;
+  z-index: 1;
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   padding: 0.2rem 0.6rem;
   border-radius: 2rem;
-  margin-bottom: 0.75rem;
   border: 1px solid;
 }
 
