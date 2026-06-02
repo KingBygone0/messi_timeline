@@ -1,0 +1,9 @@
+{
+  "name": "messi-timeline-updater",
+  "private": true,
+  "type": "module",
+  "description": "Scheduled researcher that appends new verified Messi milestones to js/data.js",
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest"
+  }
+}
