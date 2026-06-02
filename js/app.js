@@ -17,6 +17,9 @@ const TAG_LABELS = {
   'record':     'Records',
 };
 const TAG_ORDER = ['ballon-dor', 'world-cup', 'trophy', 'record'];
+const TOKEN_RE = /^[A-Za-z0-9-]+$/;
+const YOUTUBE_ID_RE = /^[A-Za-z0-9_-]{11}$/;
+const X_STATUS_URL_RE = /^https:\/\/(?:x|twitter)\.com\/[A-Za-z0-9_]{1,15}\/status\/\d+(?:[/?#].*)?$/i;
 
 // Active filter state, shared between the era and achievement filters.
 let activeEra = 'all';
@@ -30,19 +33,31 @@ function esc(str) {
     .replace(/>/g, '&gt;');
 }
 
+function safeToken(value, fallback) {
+  const token = String(value ?? '').trim();
+  return TOKEN_RE.test(token) ? token : fallback;
+}
+
+function safeEra(value) {
+  const era = String(value ?? '').trim();
+  return Object.prototype.hasOwnProperty.call(ERA_LABELS, era) ? era : 'barca';
+}
+
 function buildCard(event, index) {
   const side = index % 2 === 0 ? 'left' : 'right';
-  const tags = (event.tags ?? []).join(' ');
+  const id = safeToken(event.id, `milestone-${index + 1}`);
+  const era = safeEra(event.era);
+  const tags = (event.tags ?? []).map((tag) => safeToken(tag, '')).filter(Boolean).join(' ');
   return `
     <article
-      class="card card--${side} card--${event.era}"
-      data-era="${event.era}"
+      class="card card--${side} card--${era}"
+      data-era="${era}"
       data-tags="${esc(tags)}"
-      id="event-${event.id}"
+      id="event-${id}"
     >
       <div class="card__node" aria-hidden="true"></div>
       <div class="card__banner" aria-hidden="true">
-        <span class="card__era-label">${ERA_LABELS[event.era]}</span>
+        <span class="card__era-label">${ERA_LABELS[era]}</span>
       </div>
       <div class="card__body">
         <div class="card__meta">
@@ -66,7 +81,7 @@ function buildCard(event, index) {
           >&#120143;&thinsp;See on X</button>
           <button
             class="btn btn--share"
-            data-event-id="${esc(event.id)}"
+            data-event-id="${id}"
             aria-label="Copy a link to this milestone: ${esc(event.title)}"
           >&#128279;&thinsp;Share</button>
         </div>
@@ -87,11 +102,12 @@ function buildSeparator(year) {
 function render() {
   // Guard: duplicate ids break deep-linking (two cards share one #event-… anchor).
   const seen = new Set();
-  sorted.forEach(e => {
-    if (seen.has(e.id)) {
-      console.warn(`Messi Timeline — duplicate event id "${e.id}"; deep-links will only reach the first.`);
+  sorted.forEach((e, index) => {
+    const id = safeToken(e.id, `milestone-${index + 1}`);
+    if (seen.has(id)) {
+      console.warn(`Messi Timeline — duplicate event id "${id}"; deep-links will only reach the first.`);
     }
-    seen.add(e.id);
+    seen.add(id);
   });
 
   const items = [];
@@ -110,7 +126,10 @@ function render() {
 
 function initEraCounts() {
   const counts = {};
-  sorted.forEach(e => { counts[e.era] = (counts[e.era] || 0) + 1; });
+  sorted.forEach(e => {
+    const era = safeEra(e.era);
+    counts[era] = (counts[era] || 0) + 1;
+  });
 
   document.querySelectorAll('.era-filter__btn[data-era]').forEach(btn => {
     const era = btn.dataset.era;
@@ -132,6 +151,13 @@ function setActiveBtn(nav, activeBtn) {
   });
 }
 
+function setCardInteractive(card, interactive) {
+  card.toggleAttribute('inert', !interactive);
+  card.querySelectorAll('button').forEach(btn => {
+    btn.tabIndex = interactive ? 0 : -1;
+  });
+}
+
 // Fade any card that fails the era OR the achievement filter.
 function applyFilters() {
   document.querySelectorAll('.card').forEach(card => {
@@ -141,6 +167,7 @@ function applyFilters() {
     const match    = eraMatch && tagMatch;
     card.classList.toggle('is-faded', !match);
     card.setAttribute('aria-hidden', match ? 'false' : 'true');
+    setCardInteractive(card, match);
   });
   syncUrl();
 }
@@ -209,6 +236,21 @@ function initFiltersFromUrl() {
     const btn = document.querySelector(`.tag-filter__btn[data-tag="${CSS.escape(tag)}"]`);
     if (btn) { activeTag = tag; setActiveBtn(document.querySelector('.tag-filter'), btn); }
   }
+  applyFilters();
+}
+
+function resetFiltersToAll() {
+  activeEra = 'all';
+  activeTag = 'all';
+
+  const eraNav = document.querySelector('.era-filter');
+  const eraAll = eraNav?.querySelector('.era-filter__btn[data-era="all"]');
+  if (eraNav && eraAll) setActiveBtn(eraNav, eraAll);
+
+  const tagNav = document.querySelector('.tag-filter');
+  const tagAll = tagNav?.querySelector('.tag-filter__btn[data-tag="all"]');
+  if (tagNav && tagAll) setActiveBtn(tagNav, tagAll);
+
   applyFilters();
 }
 
@@ -300,7 +342,7 @@ function initMedia() {
     modal.removeEventListener('keydown', onTrapKeydown);
     ytIframe.src = '';
     ytWrap.hidden = true;
-    tweetWrap.innerHTML = '';
+    tweetWrap.replaceChildren();
     tweetWrap.hidden = true;
     // Return focus to the button that opened the modal
     lastFocus?.focus();
@@ -313,6 +355,7 @@ function initMedia() {
   });
 
   function openYouTube(youtubeId) {
+    tweetWrap.replaceChildren();
     tweetWrap.hidden = true;
     ytWrap.hidden = false;
     ytIframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
@@ -330,13 +373,26 @@ function initMedia() {
 
   function openTweet(tweetUrl) {
     ytWrap.hidden = true;
-    tweetWrap.innerHTML = `
-      <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
-        <a href="${tweetUrl}">View post on X</a>
-      </blockquote>`;
+    tweetWrap.replaceChildren();
+
+    const quote = document.createElement('blockquote');
+    quote.className = 'twitter-tweet';
+    quote.dataset.theme = 'dark';
+    quote.dataset.dnt = 'true';
+
+    const link = document.createElement('a');
+    link.href = tweetUrl;
+    link.textContent = 'View post on X';
+
+    quote.appendChild(link);
+    tweetWrap.appendChild(quote);
     tweetWrap.hidden = false;
     openModal();
     loadTwitterWidgets(tweetWrap);
+  }
+
+  function openExternalSearch(url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   document.getElementById('timeline').addEventListener('click', (e) => {
@@ -344,25 +400,23 @@ function initMedia() {
     const xBtn     = e.target.closest('.btn--x');
 
     if (watchBtn) {
-      const id = watchBtn.dataset.youtubeId;
-      if (id) {
+      const id = (watchBtn.dataset.youtubeId || '').trim();
+      if (YOUTUBE_ID_RE.test(id)) {
         openYouTube(id);
       } else {
-        window.open(
-          `https://www.youtube.com/results?search_query=${encodeURIComponent(watchBtn.dataset.youtubeSearch)}`,
-          '_blank', 'noopener,noreferrer'
+        openExternalSearch(
+          `https://www.youtube.com/results?search_query=${encodeURIComponent(watchBtn.dataset.youtubeSearch || '')}`
         );
       }
     }
 
     if (xBtn) {
-      const url = xBtn.dataset.tweetUrl;
-      if (url) {
+      const url = (xBtn.dataset.tweetUrl || '').trim();
+      if (X_STATUS_URL_RE.test(url)) {
         openTweet(url);
       } else {
-        window.open(
-          `https://x.com/search?q=${encodeURIComponent(xBtn.dataset.xSearch)}`,
-          '_blank', 'noopener,noreferrer'
+        openExternalSearch(
+          `https://x.com/search?q=${encodeURIComponent(xBtn.dataset.xSearch || '')}`
         );
       }
     }
@@ -370,10 +424,17 @@ function initMedia() {
     const shareBtn = e.target.closest('.btn--share');
     if (shareBtn) {
       const id  = shareBtn.dataset.eventId;
-      const url = `${location.origin}${location.pathname}#event-${id}`;
+      const url = buildShareUrl(id);
       copyShareLink(shareBtn, url);
     }
   });
+}
+
+function buildShareUrl(id) {
+  const url = new URL(location.href);
+  url.search = '';
+  url.hash = `event-${id}`;
+  return url.href;
 }
 
 // ── Share: copy a deep link to the clipboard, with a transient confirmation ─────
@@ -442,6 +503,10 @@ function initDeepLink() {
 
   const target = document.getElementById(hash.slice(1));
   if (!target) return;
+
+  if (target.classList.contains('is-faded')) {
+    resetFiltersToAll();
+  }
 
   // Force-reveal the card so the highlight isn't blocked by scroll-reveal
   target.style.animationDelay = '0ms';

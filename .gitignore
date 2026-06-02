@@ -10,3 +10,6 @@ Thumbs.db
 # Local dev server cache (npx serve, etc.)
 node_modules/
 npm-debug.log*
+
+# Stray Expo cache (machine-specific; this is a static site, not an Expo app)
+.expo/
