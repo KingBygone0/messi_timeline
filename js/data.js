@@ -24,6 +24,18 @@ export const EVENTS = [
     xSearch: "Messi first Barcelona goal Ronaldinho 2005"
   },
   {
+    id: "first-la-liga-title-2005",
+    year: 2005,
+    date: "May 2005",
+    era: "barca",
+    title: "First La Liga title with Barcelona",
+    description: "Still a teenager, Messi wins his first La Liga medal as Barcelona claim the Spanish title. He contributes modestly — glimpses of the future, not the finished article — but it is the first chapter of a trophy haul that will become the most decorated club career in history.",
+    youtubeId: "",
+    youtubeSearch: "Barcelona La Liga champions 2004-05 title",
+    tweetUrl: "",
+    xSearch: "Barcelona La Liga 2005 title Messi"
+  },
+  {
     id: "u20-world-cup-2005",
     year: 2005,
     date: "Jun 2005",
@@ -48,18 +60,6 @@ export const EVENTS = [
     xSearch: "Messi World Cup debut 2006 Germany"
   },
   {
-    id: "copa-america-runner-up-2007",
-    year: 2007,
-    date: "15 Jul 2007",
-    era: "argentina",
-    title: "Copa América runner-up — wins Best Young Player",
-    description: "Argentina reach the Copa América final in Venezuela but are outclassed by Brazil 3–0. A 19-year-old Messi is named Best Young Player of the tournament — brilliant individually, but the pattern of international near-misses is already beginning to form.",
-    youtubeId: "",
-    youtubeSearch: "Messi Copa America 2007 Argentina Brazil final",
-    tweetUrl: "",
-    xSearch: "Messi Copa America 2007 runner-up"
-  },
-  {
     id: "maradona-goal-2007",
     year: 2007,
     date: "18 Apr 2007",
@@ -70,6 +70,18 @@ export const EVENTS = [
     youtubeSearch: "Messi goal vs Getafe 2007 Maradona Copa del Rey",
     tweetUrl: "",
     xSearch: "Messi Maradona goal Getafe 2007"
+  },
+  {
+    id: "copa-america-runner-up-2007",
+    year: 2007,
+    date: "15 Jul 2007",
+    era: "argentina",
+    title: "Copa América runner-up — wins Best Young Player",
+    description: "Argentina reach the Copa América final in Venezuela but are outclassed by Brazil 3–0. A 19-year-old Messi is named Best Young Player of the tournament — brilliant individually, but the pattern of international near-misses is already beginning to form.",
+    youtubeId: "",
+    youtubeSearch: "Messi Copa America 2007 Argentina Brazil final",
+    tweetUrl: "",
+    xSearch: "Messi Copa America 2007 runner-up"
   },
   {
     id: "olympic-gold-2008",
@@ -108,6 +120,18 @@ export const EVENTS = [
     xSearch: "Messi Club World Cup 2009 Barcelona sextuple"
   },
   {
+    id: "world-cup-2010",
+    year: 2010,
+    date: "3 Jul 2010",
+    era: "argentina",
+    title: "World Cup quarter-final exit — Germany 4–0",
+    description: "In a humbling quarter-final in Cape Town, Argentina are dismantled 4–0 by Germany despite being one of the pre-tournament favourites. Messi, carrying the weight of a nation's expectations, cannot find a way through. The defeat adds another chapter to his complicated relationship with the World Cup.",
+    youtubeId: "",
+    youtubeSearch: "Argentina Germany 4-0 World Cup 2010 quarter-final Cape Town",
+    tweetUrl: "",
+    xSearch: "Argentina Germany World Cup 2010 Messi"
+  },
+  {
     id: "second-ballon-dor-2010",
     year: 2010,
     date: "2010",
@@ -142,6 +166,30 @@ export const EVENTS = [
     youtubeSearch: "Messi third Ballon d'Or 2011 ceremony award",
     tweetUrl: "",
     xSearch: "Messi 3rd Ballon d'Or 2011"
+  },
+  {
+    id: "la-liga-50-goals-2012",
+    year: 2012,
+    date: "May 2012",
+    era: "barca",
+    title: "50 La Liga goals in one season — all-time record",
+    description: "Messi finishes the 2011–12 La Liga campaign with 50 goals, obliterating the previous single-season record and becoming the first player in history to reach 50 in one Spanish top-flight season. Combined with his exploits in other competitions, he ends the calendar year with 91 goals in total.",
+    youtubeId: "",
+    youtubeSearch: "Messi 50 La Liga goals record 2011-12 season",
+    tweetUrl: "",
+    xSearch: "Messi 50 goals La Liga season record 2012"
+  },
+  {
+    id: "copa-del-rey-2012",
+    year: 2012,
+    date: "25 May 2012",
+    era: "barca",
+    title: "Copa del Rey final — scores twice vs Athletic Club",
+    description: "Messi scores twice as Barcelona beat Athletic Club 3–0 in the Copa del Rey final in Madrid, adding yet another domestic cup to an already bulging trophy cabinet. The victory underlines just how total Barcelona's dominance of Spanish football has become during this golden era.",
+    youtubeId: "",
+    youtubeSearch: "Messi Copa del Rey final 2012 Barcelona Athletic Club goals",
+    tweetUrl: "",
+    xSearch: "Messi Copa del Rey 2012 final Barcelona Athletic Club"
   },
   {
     id: "91-goals-2012",
@@ -180,6 +228,18 @@ export const EVENTS = [
     xSearch: "Messi World Cup final 2014 Argentina Golden Ball"
   },
   {
+    id: "la-liga-all-time-record-2014",
+    year: 2014,
+    date: "Nov 2014",
+    era: "barca",
+    title: "Breaks Telmo Zarra's La Liga all-time scoring record",
+    description: "Messi surpasses Telmo Zarra's seemingly unbreakable La Liga record, set across 15 years with Athletic Club in the 1940s and '50s. To score 252 La Liga goals by the age of 27 is an achievement that had seemed the stuff of fantasy — Messi makes it look inevitable.",
+    youtubeId: "",
+    youtubeSearch: "Messi breaks Telmo Zarra La Liga all time scoring record 2014",
+    tweetUrl: "",
+    xSearch: "Messi Zarra La Liga record 2014"
+  },
+  {
     id: "second-treble-2015",
     year: 2015,
     date: "Jun 2015",
@@ -197,7 +257,7 @@ export const EVENTS = [
     date: "4 Jul 2015",
     era: "argentina",
     title: "Copa América runner-up — second final defeat to Chile",
-    description: "Argentina reach yet another Copa América final but lose to Chile on penalties for the first time, in Santiago. Messi scores in the shootout but two teammates miss, and Argentina's international drought stretches on. A second consecutive major final defeat intensifies questions about whether the trophy will ever arrive.",
+    description: "Argentina reach yet another Copa América final but lose to Chile on penalties in Santiago. Messi scores in the shootout but two teammates miss, and Argentina's international drought extends further. A second consecutive major final defeat intensifies the question of whether the trophy will ever arrive.",
     youtubeId: "",
     youtubeSearch: "Messi Argentina Copa America final 2015 Chile penalties",
     tweetUrl: "",
@@ -208,12 +268,24 @@ export const EVENTS = [
     year: 2015,
     date: "20 Dec 2015",
     era: "barca",
-    title: "Second FIFA Club World Cup — Player of the Tournament",
-    description: "Barcelona beat River Plate 3–0 in Yokohama to win the Club World Cup for the second time, with Messi collecting the Golden Ball as player of the tournament. It is a fitting final chapter to a treble-winning year and Barça's most decorated era.",
+    title: "Second FIFA Club World Cup — Golden Ball",
+    description: "Barcelona beat River Plate 3–0 in Yokohama to win the Club World Cup for the second time, with Messi collecting the Golden Ball as player of the tournament. It is a fitting final chapter to a treble-winning year and Barcelona's most decorated era.",
     youtubeId: "",
     youtubeSearch: "Messi Club World Cup 2015 Barcelona River Plate Yokohama",
     tweetUrl: "",
     xSearch: "Messi Club World Cup 2015 Barcelona"
+  },
+  {
+    id: "bernabeu-shirt-2016",
+    year: 2016,
+    date: "2 Apr 2016",
+    era: "barca",
+    title: "El Clásico winner at the Bernabéu — the shirt celebration",
+    description: "Messi scores a stoppage-time winner at the Bernabéu to give Barcelona a 2–1 victory over Real Madrid in La Liga. In response to the crowd that had been baiting him all night, he strips off his shirt and holds it to face the stands — one of the most iconic moments of defiance in football history.",
+    youtubeId: "",
+    youtubeSearch: "Messi Bernabeu shirt celebration El Clasico winner 2016",
+    tweetUrl: "",
+    xSearch: "Messi shirt Bernabeu El Clasico 2016 winner"
   },
   {
     id: "copa-america-centenario-2016",
@@ -228,16 +300,76 @@ export const EVENTS = [
     xSearch: "Messi retirement announcement Copa America 2016"
   },
   {
+    id: "batistuta-record-2016",
+    year: 2016,
+    date: "Nov 2016",
+    era: "argentina",
+    title: "Breaks Batistuta's Argentina all-time scoring record",
+    description: "Messi surpasses Gabriel Batistuta's long-standing record to become Argentina's all-time leading scorer. The milestone arrives in a World Cup qualifying match — quietly fitting for a record that had seemed safe, held by one of South America's most revered strikers for nearly two decades.",
+    youtubeId: "",
+    youtubeSearch: "Messi breaks Batistuta Argentina all time scoring record 2016",
+    tweetUrl: "",
+    xSearch: "Messi Batistuta Argentina scoring record 2016"
+  },
+  {
+    id: "copa-del-rey-2017",
+    year: 2017,
+    date: "27 May 2017",
+    era: "barca",
+    title: "Copa del Rey final — stunning solo goal vs Alavés",
+    description: "Messi produces a vintage individual goal in the Copa del Rey final against Alavés — collecting the ball wide, cutting inside and finishing with precision — as Barcelona win 3–1. Even at 29, the quality of his invention remains startling.",
+    youtubeId: "",
+    youtubeSearch: "Messi Copa del Rey final 2017 solo goal Alaves Barcelona",
+    tweetUrl: "",
+    xSearch: "Messi Copa del Rey final 2017 goal Alaves"
+  },
+  {
+    id: "ecuador-hat-trick-2017",
+    year: 2017,
+    date: "10 Oct 2017",
+    era: "argentina",
+    title: "Hat-trick vs Ecuador at altitude saves World Cup qualification",
+    description: "With Argentina on the brink of failing to qualify for Russia 2018, Messi produces one of the most dramatic individual performances in World Cup qualifying history — scoring a hat-trick in Quito at over 2,800 metres above sea level to seal a 3–1 win. Argentina qualify in third place; the rest of the world exhales.",
+    youtubeId: "",
+    youtubeSearch: "Messi hat-trick Ecuador Quito World Cup qualifying 2017",
+    tweetUrl: "",
+    xSearch: "Messi hat trick Ecuador qualifying 2017 Quito"
+  },
+  {
+    id: "world-cup-russia-2018",
+    year: 2018,
+    date: "30 Jun 2018",
+    era: "argentina",
+    title: "World Cup exit vs France — 4–3 classic",
+    description: "Argentina face France in a breathless Round of 16 in Kazan — Messi scores and creates, but Kylian Mbappé's explosive double seals a 4–3 victory for France, who go on to win the tournament. Another World Cup ends without the ultimate prize, and the pressure mounts heading into what many expect to be Messi's final shot.",
+    youtubeId: "",
+    youtubeSearch: "Messi Argentina France 4-3 World Cup 2018 round of 16 Kazan",
+    tweetUrl: "",
+    xSearch: "Messi Argentina France World Cup 2018 4-3"
+  },
+  {
     id: "ucl-semi-liverpool-2019",
     year: 2019,
     date: "30 Apr 2019",
     era: "barca",
-    title: "UCL semi vs Liverpool — Messi's free-kick & Anfield collapse",
-    description: "Messi scores twice in the first leg at the Camp Nou — including a stunning direct free-kick — as Barcelona lead 3–0 going to Anfield. But in one of football's most extraordinary nights, Liverpool win the second leg 4–0 to reach the final on aggregate. The result stands as one of the most painful defeats of Messi's career.",
+    title: "UCL semi vs Liverpool — free-kick masterclass & Anfield collapse",
+    description: "Messi scores twice in the first leg at the Camp Nou — including a stunning direct free-kick — as Barcelona lead 3–0 going to Anfield. But in one of football's most extraordinary nights, Liverpool win the second leg 4–0 to advance on aggregate. The result stands as one of the most painful defeats of Messi's career.",
     youtubeId: "",
     youtubeSearch: "Messi free kick Barcelona Liverpool Champions League semi 2019",
     tweetUrl: "",
     xSearch: "Messi Liverpool UCL semi 2019 Anfield comeback"
+  },
+  {
+    id: "copa-america-2019",
+    year: 2019,
+    date: "Jul 2019",
+    era: "argentina",
+    title: "Copa América 2019 — third place & CONMEBOL controversy",
+    description: "Argentina finish third at the Copa América in Brazil, beating Chile in the play-off. Messi is furious at what he calls corrupt officiating throughout the tournament, publicly criticising CONMEBOL — remarks that earn him a three-month ban. The controversy only deepens his resolve to finally win with his country.",
+    youtubeId: "",
+    youtubeSearch: "Messi Copa America 2019 third place CONMEBOL criticism Argentina",
+    tweetUrl: "",
+    xSearch: "Messi CONMEBOL Copa America 2019 criticism ban"
   },
   {
     id: "sixth-ballon-dor-2019",
@@ -293,11 +425,23 @@ export const EVENTS = [
     date: "May 2022",
     era: "psg",
     title: "Ligue 1 title with PSG",
-    description: "Messi wins his first and only Ligue 1 championship as Paris Saint-Germain seal the French title. His debut season in Paris is difficult by his own standards — hampered by injury and COVID — but the league medal adds to a collection that now spans every major domestic league he has played in.",
+    description: "Messi wins his first and only Ligue 1 championship as Paris Saint-Germain seal the French title. His debut season in Paris is difficult by his own standards — hampered by injury and adaptation — but the league medal adds to a collection that now spans every major domestic league he has played in.",
     youtubeId: "",
     youtubeSearch: "Messi PSG Ligue 1 champion 2022",
     tweetUrl: "",
     xSearch: "Messi PSG Ligue 1 title 2022"
+  },
+  {
+    id: "finalissima-2022",
+    year: 2022,
+    date: "1 Jun 2022",
+    era: "argentina",
+    title: "Finalissima — Argentina beat Italy 3–0 at Wembley",
+    description: "Argentina face European champions Italy in the inaugural Finalissima at Wembley and win 3–0 in dominant fashion, confirming their status as the best national team in the world. Messi orchestrates throughout, and the result is a statement of intent ahead of the Qatar World Cup later that year.",
+    youtubeId: "",
+    youtubeSearch: "Messi Argentina Italy Finalissima 2022 Wembley 3-0",
+    tweetUrl: "",
+    xSearch: "Messi Finalissima 2022 Argentina Italy Wembley"
   },
   {
     id: "world-cup-2022",
