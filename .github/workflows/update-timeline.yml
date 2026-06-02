@@ -3,8 +3,10 @@ name: Auto-update timeline
 # Runs weekly to research new Messi milestones and publish them directly.
 # Also runnable on demand from the Actions tab (workflow_dispatch).
 on:
-  schedule:
-    - cron: '0 9 * * 1'   # every Monday at 09:00 UTC
+  # Weekly schedule is paused (needs Anthropic API credits to run).
+  # Re-enable by uncommenting the two lines below once credits are added.
+  # schedule:
+  #   - cron: '0 9 * * 1'   # every Monday at 09:00 UTC
   workflow_dispatch: {}
 
 permissions:
