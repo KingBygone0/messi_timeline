@@ -71,13 +71,3 @@ body:
     attributes:
       label: X search terms (optional)
       description: Defaults to the title if left blank.
-  - type: input
-    id: instagram_url
-    attributes:
-      label: Instagram URL (optional)
-      description: Full URL like https://www.instagram.com/p/XXXX/. Leave blank if unknown.
-  - type: input
-    id: instagram_search
-    attributes:
-      label: Instagram search terms (optional)
-      description: Defaults to the title if left blank.

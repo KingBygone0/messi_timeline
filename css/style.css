@@ -565,18 +565,6 @@ body::after {
   border-color: rgba(255,255,255,0.25);
 }
 
-.btn--instagram {
-  background: transparent;
-  color: var(--muted);
-  border-color: rgba(255,255,255,0.1);
-}
-
-.btn--instagram:hover {
-  color: #e1306c;
-  border-color: rgba(225, 48, 108, 0.5);
-  background: rgba(225, 48, 108, 0.06);
-}
-
 .btn--share {
   background: transparent;
   color: var(--muted);

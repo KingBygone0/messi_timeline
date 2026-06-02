@@ -19,7 +19,6 @@ const ERAS = new Set(['barca', 'psg', 'miami', 'argentina']);
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6';
 const YOUTUBE_ID = /^[A-Za-z0-9_-]{11}$/;
 const TWEET_URL = /^https:\/\/(x|twitter)\.com\/[^/]+\/status\/\d+/i;
-const INSTAGRAM_URL = /^https:\/\/(www\.)?instagram\.com\/(p|reel)\/[A-Za-z0-9_-]+/i;
 
 // ── Load existing events ────────────────────────────────────────────────────────
 
@@ -38,8 +37,8 @@ const system = [
     type: 'text',
     text:
       'You maintain a factual timeline of Lionel Messi\'s career. You only report ' +
-      'milestones you can confirm via web search. You never invent video IDs, tweet ' +
-      'URLs, or Instagram URLs — if you cannot find a real one, you leave that field "".',
+      'milestones you can confirm via web search. You never invent video IDs or tweet ' +
+      'URLs — if you cannot find a real one, you leave that field "".',
     cache_control: { type: 'ephemeral' },
   },
 ];
@@ -67,8 +66,6 @@ For EACH new milestone, output an object with these exact fields:
 - youtubeSearch: search terms (always filled)
 - tweetUrl: a real full tweet/status URL you verified, else ""
 - xSearch: search terms (always filled)
-- instagramUrl: a real full instagram.com/p/... URL you verified, else ""
-- instagramSearch: search terms (always filled)
 
 Output ONLY the JSON array of new events between the markers below, nothing else.
 If there are no new milestones, output an empty array [].
@@ -133,7 +130,7 @@ if (!Array.isArray(proposed) || proposed.length === 0) {
 
 // ── Validate + sanitize each proposed event ─────────────────────────────────────
 
-const REQUIRED = ['id', 'year', 'date', 'era', 'title', 'description', 'youtubeSearch', 'xSearch', 'instagramSearch'];
+const REQUIRED = ['id', 'year', 'date', 'era', 'title', 'description', 'youtubeSearch', 'xSearch'];
 
 function clean(ev) {
   for (const f of REQUIRED) {
@@ -143,16 +140,14 @@ function clean(ev) {
   if (existingIds.has(ev.id) || existingTitles.has(ev.title.toLowerCase().trim())) return null;
 
   // No fabrication: discard any media value that isn't a real, well-formed reference.
-  const youtubeId    = YOUTUBE_ID.test(ev.youtubeId || '')        ? ev.youtubeId    : '';
-  const tweetUrl     = TWEET_URL.test(ev.tweetUrl || '')          ? ev.tweetUrl     : '';
-  const instagramUrl = INSTAGRAM_URL.test(ev.instagramUrl || '')  ? ev.instagramUrl : '';
+  const youtubeId = YOUTUBE_ID.test(ev.youtubeId || '') ? ev.youtubeId : '';
+  const tweetUrl  = TWEET_URL.test(ev.tweetUrl || '')   ? ev.tweetUrl  : '';
 
   return {
     id: ev.id, year: ev.year, date: ev.date, era: ev.era,
     title: ev.title, description: ev.description,
     youtubeId, youtubeSearch: ev.youtubeSearch,
     tweetUrl, xSearch: ev.xSearch,
-    instagramUrl, instagramSearch: ev.instagramSearch,
   };
 }
 
@@ -181,8 +176,7 @@ function literal(e) {
     title: ${q(e.title)},
     description: ${q(e.description)},
     youtubeId: ${q(e.youtubeId)}, youtubeSearch: ${q(e.youtubeSearch)},
-    tweetUrl: ${q(e.tweetUrl)}, xSearch: ${q(e.xSearch)},
-    instagramUrl: ${q(e.instagramUrl)}, instagramSearch: ${q(e.instagramSearch)}
+    tweetUrl: ${q(e.tweetUrl)}, xSearch: ${q(e.xSearch)}
   }`;
 }
 

@@ -14,7 +14,6 @@ const DATA_PATH = resolve(__dirname, '..', process.env.DATA_FILE || 'js/data.js'
 const ERAS = { barcelona: 'barca', psg: 'psg', 'inter miami': 'miami', argentina: 'argentina' };
 const YOUTUBE_ID = /^[A-Za-z0-9_-]{11}$/;
 const TWEET_URL = /^https:\/\/(x|twitter)\.com\/[^/]+\/status\/\d+/i;
-const INSTAGRAM_URL = /^https:\/\/(www\.)?instagram\.com\/(p|reel)\/[A-Za-z0-9_-]+/i;
 
 async function setOutput(obj) {
   const line = Object.entries(obj).map(([k, v]) => `${k}=${v}`).join('\n') + '\n';
@@ -99,8 +98,6 @@ const event = {
   youtubeSearch: (f['youtube search terms (optional)'] || '').trim() || title,
   tweetUrl: TWEET_URL.test((f['tweet/x url (optional)'] || '').trim()) ? f['tweet/x url (optional)'].trim() : '',
   xSearch: (f['x search terms (optional)'] || '').trim() || title,
-  instagramUrl: INSTAGRAM_URL.test((f['instagram url (optional)'] || '').trim()) ? f['instagram url (optional)'].trim() : '',
-  instagramSearch: (f['instagram search terms (optional)'] || '').trim() || title,
 };
 
 // ── Render literal + append before the closing `];` ─────────────────────────────
@@ -112,8 +109,7 @@ const literal = `  {
     title: ${q(event.title)},
     description: ${q(event.description)},
     youtubeId: ${q(event.youtubeId)}, youtubeSearch: ${q(event.youtubeSearch)},
-    tweetUrl: ${q(event.tweetUrl)}, xSearch: ${q(event.xSearch)},
-    instagramUrl: ${q(event.instagramUrl)}, instagramSearch: ${q(event.instagramSearch)}
+    tweetUrl: ${q(event.tweetUrl)}, xSearch: ${q(event.xSearch)}
   }`;
 
 const src = await readFile(DATA_PATH, 'utf8');

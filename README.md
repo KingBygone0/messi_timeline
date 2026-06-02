@@ -1,6 +1,6 @@
 # The Messi Timeline
 
-An interactive, single-page career timeline for Lionel Messi (2004–2026). Every milestone is rendered from a single JavaScript data array — adding an event requires editing one file. Each card links to YouTube highlights and X/Twitter posts (plus an Instagram lookup): inline embeds when a real ID is provided, targeted search fallbacks otherwise. Filter by era or by achievement (Ballon d'Or, World Cup, trophies, records), copy a shareable deep link to any milestone, and jump between cards with the <kbd>J</kbd>/<kbd>K</kbd> keys. Built with plain HTML, CSS, and vanilla JS — no build step, no framework.
+An interactive, single-page career timeline for Lionel Messi (2004–2026). Every milestone is rendered from a single JavaScript data array — adding an event requires editing one file. Each card links to YouTube highlights and X/Twitter posts: inline embeds when a real ID is provided, targeted search fallbacks otherwise. Filter by era or by achievement (Ballon d'Or, World Cup, trophies, records), copy a shareable deep link to any milestone, and jump between cards with the <kbd>J</kbd>/<kbd>K</kbd> keys. Built with plain HTML, CSS, and vanilla JS — no build step, no framework.
 
 ---
 
@@ -50,8 +50,6 @@ Open `js/data.js` and append an object to the `EVENTS` array. The page re-render
   youtubeSearch:  "Search terms for YouTube fallback",
   tweetUrl:       "",                    // leave empty if unknown — never guess
   xSearch:        "Search terms for X fallback",
-  instagramUrl:   "",                    // leave empty if unknown — never guess
-  instagramSearch:"Search terms for Instagram fallback",
   tags:           ["trophy"],            // optional; see below. Omit or [] if none apply
 }
 ```
